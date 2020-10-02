@@ -18,7 +18,11 @@
 <body>
     {% include 'includes/_navbar.html' %}
     <div class="container mt-5">
-        {% include 'includes/_messages.html' %}
+        <div class="row">
+            <div class="col-6 offset-md-3">
+                {% include 'includes/_messages.html' %}
+            </div>
+        </div>
         {% block body %}{% endblock %}
     </div>
 </body>
