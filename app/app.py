@@ -66,6 +66,17 @@ def register():
         # Create cursor
         cur = mysql.connection.cursor()
 
+        cur.execute('SELECT * FROM users')
+        users = cur.fetchall()
+
+        for u in users:
+            if email == u['email']:
+                flash('This email already exists', 'danger')
+                return redirect(url_for('register'))
+            elif username == u['username']:
+                flash('This username already exists', 'danger')
+                return redirect(url_for('register'))
+                
         # Execute query
         cur.execute("INSERT INTO users(name, email, username, password)\
                     VALUES(%s, %s, %s, %s)", (name, email, username, password))
