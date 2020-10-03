@@ -10,5 +10,11 @@
             <h1 class="display-4">Welcome Home!</h1>
             <p class="lead">This is a homepage of the Simple Blog Flask Bootstrap</p>
         </div>
+        {% if session.logged_in == NULL %}
+            <div class="mt-5">
+                <a href="/register" class="btn btn-primary btn-lg">Register</a>
+                <a href="/login" class="btn btn-success btn-lg">Login</a>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
