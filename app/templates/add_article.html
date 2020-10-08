@@ -10,6 +10,7 @@
     <h1>Create a new article</h1>
     {% from 'includes/_formtemplates.html' import render_field %}
     <form class="mt-5" action="" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <div class="form-group">
             {{ render_field(form.title, class_='form-control') }}
         </div>

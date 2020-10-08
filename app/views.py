@@ -7,14 +7,41 @@ from flask import session
 from flask import logging
 from flask import request
 from passlib.hash import sha256_crypt
+from functools import wraps
 
 from forms import RegisterForm
 from forms import ArticleForm
-from security import is_logged_in
 from app import mysql
 
 
 blog = Blueprint('blog', __name__)
+
+
+def is_logged_in(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        if 'logged_in' in session:
+            return f(*args, **kwargs)
+        else:
+            flash('Unauthorized. Please, log in', 'danger')
+            return redirect(url_for('blog.login'))
+    return wrapper
+
+
+def is_author(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        article_id = kwargs['id']
+        cur = mysql.connect.cursor()
+        cur.execute("SELECT * FROM articles WHERE id=%s", [article_id])
+        article = cur.fetchone()
+        cur.close()
+        if session['username'] == article['author']:
+            return f(*args, **kwargs)
+        else:
+            flash('Permission denied. You are not the author of the article', 'danger')
+            return redirect(url_for('blog.dashboard'))
+    return wrapper
 
 
 @blog.route('/')
@@ -125,7 +152,7 @@ def logout():
 @is_logged_in
 def dashboard():
     cur = mysql.connection.cursor()
-    result = cur.execute("SELECT * FROM articles")
+    result = cur.execute("SELECT * FROM articles WHERE author=%s", [session['username']])
     articles = cur.fetchall()
     cur.close()
     if result > 0:
@@ -155,6 +182,7 @@ def add_article():
 
 @blog.route('/edit_article/<string:id>/', methods=['POST', 'GET'])
 @is_logged_in
+@is_author
 def edit_article(id):
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM articles WHERE id=%s", [id])
@@ -181,6 +209,7 @@ def edit_article(id):
 
 @blog.route('/delete_article/<string:id>/', methods=['POST'])
 @is_logged_in
+@is_author
 def delete_article(id):
     cur = mysql.connection.cursor()
     cur.execute("DELETE FROM articles WHERE id=%s", [id])
