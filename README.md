@@ -15,7 +15,9 @@ This is a pretty simple blog. This application will let you create an account an
 ```pip install pipenv```
 5. Install required packages using pipenv (keep staying in the root folder of the project):  
 ```pipenv install```
-6. Execute 'app/config.py' (this will create a new database automatically):  
+6. Launch virtual environment:  
+```pipenv shell```
+7. Execute 'app/config.py' (this will create a new database automatically):  
 ```python3 app/config.py```
-7. Launch 'app/main.py':  
+8. Launch 'app/main.py':  
 ```python3 app/main.py```
