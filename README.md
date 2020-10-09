@@ -10,12 +10,12 @@ This is a pretty simple blog. This application will let you create an account an
 1. At first, you should install _mysql-server_ and _libmysqlclient-dev_:  
 ```sudo apt-get install mysql-server libmysqlclient-dev```
 2. Clone this repository to your computer and open the folder
-3. **Open** file 'config.py', set required data (host, user, pass, db) and then close the file
-4. Execute 'config.py' (this will create a new database automatically):  
-```python config.py```
-5. Install _pipenv_:  
+3. **Open** file 'app/config.py', set required data (host, user, pass, db) and then close the file
+4. Install _pipenv_:  
 ```pip install pipenv```
-6. Install required packages using pipenv (keep staying in the folder):  
+5. Install required packages using pipenv (keep staying in the root folder of the project):  
 ```pipenv install```
-7. Launch 'main.py':  
-```python main.py```
+6. Execute 'app/config.py' (this will create a new database automatically):  
+```python3 app/config.py```
+7. Launch 'app/main.py':  
+```python3 app/main.py```
