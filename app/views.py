@@ -189,8 +189,6 @@ def edit_article(id):
     article = cur.fetchone()
 
     form = ArticleForm(request.form)
-    form.title.data = article['title']
-    form.body.data = article['body']
 
     if request.method == 'POST' and form.validate():
         title = request.form['title']
@@ -203,8 +201,10 @@ def edit_article(id):
 
         flash('Article edited successfully', 'success')
         return redirect(url_for('blog.dashboard'))
-
-    return render_template('edit_article.html', form=form)
+    
+    form.title.data = article['title']
+    form.body.data = article['body']
+    return render_template('edit_article.html', form=form, id=article['id'])
 
 
 @blog.route('/delete_article/<string:id>/', methods=['POST'])
